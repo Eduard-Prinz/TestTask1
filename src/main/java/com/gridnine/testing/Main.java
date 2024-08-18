@@ -1,17 +1,27 @@
 package com.gridnine.testing;
 
-//TIP To <b>Run</b> code, press <shortcut actionId="Run"/> or
-// click the <icon src="AllIcons.Actions.Execute"/> icon in the gutter.
+import com.gridnine.testing.builder.FlightBuilder;
+import com.gridnine.testing.model.Flight;
+import com.gridnine.testing.filter.FlightFilter;
+
+import java.util.List;
+
 public class Main {
     public static void main(String[] args) {
-        //TIP Press <shortcut actionId="ShowIntentionActions"/> with your caret at the highlighted text
-        // to see how IntelliJ IDEA suggests fixing it.
-        System.out.printf("Hello and welcome!");
 
-        for (int i = 1; i <= 5; i++) {
-            //TIP Press <shortcut actionId="Debug"/> to start debugging your code. We have set one <icon src="AllIcons.Debugger.Db_set_breakpoint"/> breakpoint
-            // for you, but you can always add more by pressing <shortcut actionId="ToggleLineBreakpoint"/>.
-            System.out.println("i = " + i);
-        }
+        List<Flight> flights = new FlightBuilder().createFlights();
+        System.out.println("Данные без фильтров \n" + flights + "\n");
+
+        List<Flight> flightsArrivalBeforeDeparturePresent = new FlightFilter(flights)
+                .arrivalBeforeDeparturePresent().build();
+        System.out.println("Отъезд до настоящего момента \n" + flightsArrivalBeforeDeparturePresent + "\n");
+
+        List<Flight> flightsArrivalBeforeDeparture = new FlightFilter(flights)
+                .filterArrivalBeforeDeparture().build();
+        System.out.println("Прибытие перед отправлением \n" + flightsArrivalBeforeDeparture + "\n");
+
+        List<Flight> flightsTimeMoreTwoHours = new FlightFilter(flights)
+                .timeMoreTwoHours().build();
+        System.out.println("Нахождения на земле более двух часов \n" + flightsTimeMoreTwoHours + "\n");
     }
 }
